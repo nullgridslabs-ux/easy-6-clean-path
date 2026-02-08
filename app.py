@@ -10,6 +10,17 @@ os.makedirs(BASE, exist_ok=True)
 with open("/tmp/secret.txt","w") as f:
     f.write("CTF{easy_path_normalization}")
 
+@app.route("/")
+def index():
+    return """
+<h2>Document Viewer</h2>
+<p>Internal document preview service.</p>
+<ul>
+<li>GET /view?path=</li>
+<li>GET /health</li>
+</ul>
+"""
+
 @app.route("/health")
 def health():
     return "ok"
@@ -24,4 +35,5 @@ def view():
     return send_file(os.path.realpath(full))
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
